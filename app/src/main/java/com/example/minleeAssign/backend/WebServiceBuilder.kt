@@ -1,5 +1,6 @@
 package com.example.minleeAssign.backend
 
+import com.example.minleeAssign.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -10,8 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object WebServiceBuilder {
 
     private val retrofit = Retrofit.Builder()
-//        .baseUrl("http://10.0.2.2:3000/") // Use this when trying from an emulator
-        .baseUrl("http://192.168.1.4:3000/")// TODO should be extracted in an environment-dependent file
+        .baseUrl(Constants.baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

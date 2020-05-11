@@ -11,8 +11,6 @@ class MainViewModel : ViewModel() {
 
     val imagesRepo = ImagesRepo() // TODO should be injected
 
-    var fileName = MutableLiveData("Loading")
-
     fun getImages(): LiveData<List<ImageModel>> {
         Timber.d("getImages: from viewmodel")
         return imagesRepo.getImages()
