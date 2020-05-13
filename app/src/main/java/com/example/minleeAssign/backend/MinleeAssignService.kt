@@ -1,6 +1,7 @@
 package com.example.minleeAssign.backend
 
 import com.example.minleeAssign.backend.models.ImageModel
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -15,6 +16,6 @@ interface MinleeAssignService {
 
     @Multipart
     @POST("images")
-    fun createImage(@Part("file") image: RequestBody): Call<ImageModel>
+    fun createImage(@Part image: MultipartBody.Part): Call<ImageModel>
 
 }

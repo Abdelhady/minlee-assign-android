@@ -75,9 +75,11 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             Timber.d("Chosen image uri is ${data?.data}")
-            data?.data?.let {
-                viewModel.createImage(it).observe(this, Observer {
+            data?.data?.let { uri ->
+                viewModel.createImage(uri).observe(this, Observer {
+                    Timber.d("Adding a newly added image with name: ${it.filename}")
                     imagesAdapter.images.add(it)
+                    imagesAdapter.notifyDataSetChanged() // TODO this reloads all images, see why `.add()` doesn't just show the new image
                 })
             }
         }
