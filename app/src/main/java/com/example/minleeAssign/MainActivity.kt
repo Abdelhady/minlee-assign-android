@@ -5,18 +5,16 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minleeAssign.databinding.ActivityMainBinding
 import com.example.minleeAssign.ui.ImagesAdapter
 import com.example.minleeAssign.viewmodels.MainViewModel
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding:ActivityMainBinding =
+        val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -35,36 +33,33 @@ class MainActivity : AppCompatActivity() {
         initImagesAdapter()
 
         fab.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                    PackageManager.PERMISSION_DENIED){
-                    //permission denied
+                    PackageManager.PERMISSION_DENIED
+                ) {
                     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
-                    //show popup to request runtime permission
                     requestPermissions(permissions, PERMISSION_CODE);
-                }
-                else{
-                    //permission already granted
+                } else {
                     pickImageFromGallery();
                 }
-            }
-            else{
-                //system OS is < Marshmallow
+            } else {
                 pickImageFromGallery();
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode){
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.size >0 && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
-                    //permission from popup granted
+                if (grantResults.size > 0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     pickImageFromGallery()
-                }
-                else{
-                    //permission from popup denied
+                } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -73,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Timber.d("Chosen image uri is ${data?.data}")
             data?.data?.let { uri ->
                 viewModel.createImage(uri).observe(this, Observer {
@@ -101,9 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        //image pick code
         private val IMAGE_PICK_CODE = 1000;
-        //Permission code
         private val PERMISSION_CODE = 1001;
     }
 
